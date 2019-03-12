@@ -33,7 +33,7 @@ export default {
   mounted() {
     let query = {
       page: 1,
-      pageSize: 10
+      pageSize: 8
     };
     this.$http.get("/user/getAll", { params: query }).then(res => {
       this.blogs = res.data.data;
