@@ -31,9 +31,10 @@ export default {
     }
   },
   mounted() {
+    //设置分页数据
     let query = {
       page: 1,
-      pageSize: 8
+      pageSize: 8 
     };
     this.$http.get("/user/getAll", { params: query }).then(res => {
       this.blogs = res.data.data;
