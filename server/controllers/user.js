@@ -1,4 +1,7 @@
 const userService = require('../services/user')
+const jwt = require('jsonwebtoken')
+const secret = require('../utils/secret.json');
+
 module.exports = {
     async getAll(ctx) {
         let req = ctx.request;
@@ -23,10 +26,20 @@ module.exports = {
         }
         try {
             let userResult = await userService.login(formData);
-
             if (userResult) {
+                let payload = {
+                    userName: userResult.username,
+                    time: new Date().getTime(),
+                    timeout: 10
+                }
+                let token = jwt.sign(payload, secret.sign, { expiresIn: "5s" });
+
                 result.code = 0
                 result.success = true
+                result.data = {
+                    token: token,
+                    user: userResult.screen_name
+                }
 
             }
             ctx.body = result;
