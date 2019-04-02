@@ -1,13 +1,15 @@
 const userModel = require('../models/user');
+const md5 = require('md5')
 const user = {
     async getAll(formData){
         let resultData = await userModel.getAllBlogs(formData)
         return resultData
     },
+
     async login(formData) {
         let resultData = await userModel.getOneByUserNameAndPassword({
-            'password': formData.password,
-            'username': formData.userName
+            'username': formData.username,
+            'password': md5(formData.username+ formData.password)
         })
         return resultData
     }

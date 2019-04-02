@@ -8,26 +8,61 @@ module.exports = {
             success: false
         }
         let userResult = await userService.getAll(params);
-        if(userResult){
-            result.code = 0 ;
+        if (userResult) {
+            result.code = 0;
             result.data = userResult
         }
         ctx.body = result;
     },
 
     async login(ctx) {
-        let formData = ctx.req;
-
+        let formData = await parsePostData(ctx)
         let result = {
-            code: '',
+            code: 1,
             success: false
         }
-        let userResult = await userService.login(formData);
-        if (userResult) {
-            if (formData.username === userResult.username) {
+        try {
+            let userResult = await userService.login(formData);
+
+            if (userResult) {
+                result.code = 0
                 result.success = true
+
             }
+            ctx.body = result;
+        } catch (err) {
+            return Promise.reject(err)
         }
-        ctx.body = result;
+
     }
+}
+
+// 解析上下文里node原生请求的POST参数
+function parsePostData(ctx) {
+    return new Promise((resolve, reject) => {
+        try {
+            let postdata = "";
+            ctx.req.addListener('data', (data) => {
+                postdata += data
+            })
+            ctx.req.addListener("end", function () {
+                let parseData = parseQueryStr(postdata)
+                resolve(parseData)
+            })
+        } catch (err) {
+            reject(err)
+        }
+    })
+}
+
+// 将POST请求参数字符串解析成JSON
+function parseQueryStr(queryStr) {
+    let queryData = {}
+    let queryStrList = queryStr.split('&')
+    // console.log(queryStrList)
+    for (let [index, queryStr] of queryStrList.entries()) {
+        let itemList = queryStr.split('=')
+        queryData[itemList[0]] = decodeURIComponent(itemList[1])
+    }
+    return queryData
 }

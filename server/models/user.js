@@ -20,8 +20,7 @@ const user = {
     async getOneByUserNameAndPassword(options) {
         let _sql = `
         SELECT * from t_users
-          where password="${options.password}" and username="${options.username}"
-          limit 1`
+          where password="${options.password}" and username="${options.username}"`
         let result = await db.query(_sql)
         if (Array.isArray(result) && result.length > 0) {
             result = result[0]

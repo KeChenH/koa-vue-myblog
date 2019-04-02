@@ -20,25 +20,19 @@ export default {
     };
   },
   methods: {
-    login() {
-      let params = {
-        // username: this.username,
-        // password: this.password
+    getBlog() {
+      //设置分页数据
+      let query = {
+        page: 1,
+        pageSize: 8
       };
-      this.$http.post("/user/login", params).then(res => {
-        console.log(res);
+      this.$http.get("/user/getAll", { params: query }).then(res => {
+        this.blogs = res.data;
       });
     }
   },
   mounted() {
-    //设置分页数据
-    let query = {
-      page: 1,
-      pageSize: 8 
-    };
-    this.$http.get("/user/getAll", { params: query }).then(res => {
-      this.blogs = res.data.data;
-    });
+    this.getBlog();
   }
 };
 </script>
@@ -53,7 +47,7 @@ export default {
   justify-content: center;
   flex-flow: row wrap;
   .blog-item {
-    margin:20px;
+    margin: 20px;
     width: 300px;
     height: 400px;
     overflow: hidden;

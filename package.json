@@ -5,9 +5,13 @@
   "main": "app.js",
   "dependencies": {
     "cors": "^2.8.5",
+    "koa-better-body": "^3.0.4",
+    "koa-body": "^4.1.0",
+    "koa-bodyparser": "^3.2.0",
     "koa-router": "^7.4.0",
     "koa2": "^2.0.0-alpha.7",
     "koa2-cors": "^2.0.6",
+    "md5": "^2.2.1",
     "mysql": "^2.16.0"
   },
   "devDependencies": {

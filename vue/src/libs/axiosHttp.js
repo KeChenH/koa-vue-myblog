@@ -3,6 +3,7 @@ import qs from "qs"
 const axiosHttp = axios.create({
     baseURL: 'http://localhost:3001',
 });
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 //添加请求拦截器
 axiosHttp.interceptors.request.use(config => {
@@ -20,7 +21,7 @@ axiosHttp.interceptors.request.use(config => {
 
 //添加响应拦截器
 axiosHttp.interceptors.response.use(response => {
-  return response
+  return response.data
 },error => {
     return Promise.reject(error) // 返回接口返回的错误信息
 });
