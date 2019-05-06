@@ -4,18 +4,22 @@ const secret = require('../utils/secret.json');
 
 module.exports = {
     async getAll(ctx) {
-        let req = ctx.request;
-        let params = req.query;
-        let result = {
-            code: -1,
-            success: false
+        try {
+            let req = ctx.request;
+            let params = req.query;
+            let result = {
+                code: -1,
+                success: false
+            }
+            let userResult = await userService.getAll(params);
+            if (userResult) {
+                result.code = 0;
+                result.data = userResult
+            }
+            ctx.body = result;
+        } catch (err) {
+            return Promise.reject(err)
         }
-        let userResult = await userService.getAll(params);
-        if (userResult) {
-            result.code = 0;
-            result.data = userResult
-        }
-        ctx.body = result;
     },
 
     async login(ctx) {
@@ -30,9 +34,10 @@ module.exports = {
                 let payload = {
                     userName: userResult.username,
                     time: new Date().getTime(),
-                    timeout: 10
+                    //设置token失效时间
+                    timeout: 3600*1000*2
                 }
-                let token = jwt.sign(payload, secret.sign, { expiresIn: "5s" });
+                let token = jwt.sign(payload, secret.sign);
 
                 result.code = 0
                 result.success = true

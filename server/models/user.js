@@ -10,7 +10,7 @@ const user = {
         let start = (page-1)*pageSize;
         let end = start+pageSize
 
-        let result = await db.findDataByPage('t_contents','*',start,end)
+        let result = await db.findDataByPage('t_contents',start,end)
       
         return result
     },

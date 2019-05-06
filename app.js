@@ -5,7 +5,7 @@ const fs = require('fs');
 const routers = require('./server/routers/index')
 const jwtKoa = require('koa-jwt')
 const secret = require('./server/utils/secret.json')
-// const checkToken = require('./server/middleware/checkToken');
+const checkToken = require('./server/middleware/checkToken');
 
 
 const config = require('./config')
@@ -13,13 +13,16 @@ const config = require('./config')
 
 app.use(cors())
 
+
 app.use(
     jwtKoa({secret:secret.sign}).unless({
         path:[/^\/user\/login/]
     })
 )
+app.use(checkToken)
 
-// app.use(checkToken)
+
+
 
 // 初始化路由中间件
 app.use(routers.routes()).use(routers.allowedMethods())

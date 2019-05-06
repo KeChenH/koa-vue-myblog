@@ -55,9 +55,9 @@ export default {
           let params = this.formInline;
           this.$http.post("/user/login", params).then(res => {
             if (res.code === 0) {
-              localStorage.setItem('koaToken',res.data.token)
-              localStorage.setItem('koaUser',res.data.user)
-              this.$router.push('/');
+              localStorage.setItem("koaToken", res.data.token);
+              localStorage.setItem("koaUser", res.data.user);
+              this.$router.push("/list");
             } else {
               this.$Message.error("用户名或密码不正确!");
             }
